@@ -36,9 +36,9 @@ class RuleManager {
 		if ($mapping) {
 			return new Rule(
 				$mapping,
-				(int)$data['fileid'],
-				(int)$data['mask'],
-				(int)$data['permissions']
+				$data['fileid'],
+				$data['mask'],
+				$data['permissions']
 			);
 		}
 

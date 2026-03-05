@@ -159,7 +159,7 @@ class FolderManager {
 		/** @var list<array{folder_id: int, mount_point: string, quota: int, acl: bool, acl_default_no_permission: bool, storage_id: int, root_id: int, options: string}> $rows */
 		$rows = $query->executeQuery()->fetchAll();
 
-		$folderIds = array_map(static fn (array $row): int => (int)$row['folder_id'], $rows);
+		$folderIds = array_map(static fn (array $row): int => $row['folder_id'], $rows);
 		$applicableMap = $this->getAllApplicable($folderIds);
 		$folderMappings = $this->getAllFolderMappings($folderIds);
 
@@ -200,7 +200,7 @@ class FolderManager {
 		/** @var list<array{folder_id: int, mount_point: string, quota: int, acl: bool, acl_default_no_permission: bool, storage_id: int, root_id: int, options: string}> $rows */
 		$rows = $query->executeQuery()->fetchAll();
 
-		$folderIds = array_map(static fn (array $row): int => (int)$row['folder_id'], $rows);
+		$folderIds = array_map(static fn (array $row): int => $row['folder_id'], $rows);
 		$applicableMap = $this->getAllApplicable($folderIds);
 		$folderMappings = $this->getAllFolderMappings($folderIds);
 
@@ -544,7 +544,7 @@ class FolderManager {
 			return $groups;
 		}
 
-		return array_values(array_filter($groups, fn (array $group): bool => (stripos($group['gid'], $search) !== false) || (stripos($group['displayname'], $search) !== false)));
+		return array_values(array_filter($groups, fn (array $group): bool => (stripos((string)$group['gid'], $search) !== false) || (stripos((string)$group['displayname'], $search) !== false)));
 	}
 
 	/**
@@ -557,7 +557,7 @@ class FolderManager {
 			return $circles;
 		}
 
-		return array_values(array_filter($circles, fn (array $circle): bool => (stripos($circle['displayname'], $search) !== false)));
+		return array_values(array_filter($circles, fn (array $circle): bool => (stripos((string)$circle['displayname'], $search) !== false)));
 	}
 
 	/**
@@ -700,7 +700,7 @@ class FolderManager {
 			return FolderDefinitionWithPermissions::fromFolder(
 				$folder,
 				Cache::cacheEntryFromData($row, $this->mimeTypeLoader),
-				(int)$row['group_permissions']
+				$row['group_permissions']
 			);
 		}, $result);
 	}

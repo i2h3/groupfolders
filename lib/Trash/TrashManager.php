@@ -33,13 +33,13 @@ class TrashManager {
 		$rows = $query->executeQuery()->fetchAll();
 
 		return array_map(fn (array $row): array => [
-			'trash_id' => (int)$row['trash_id'],
-			'name' => (string)$row['name'],
-			'deleted_time' => (int)$row['deleted_time'],
-			'original_location' => (string)$row['original_location'],
-			'folder_id' => (int)$row['folder_id'],
-			'file_id' => $row['file_id'] !== null ? (int)$row['file_id'] : null,
-			'deleted_by' => $row['deleted_by'] !== null ? (string)$row['deleted_by'] : null,
+			'trash_id' => $row['trash_id'],
+			'name' => $row['name'],
+			'deleted_time' => $row['deleted_time'],
+			'original_location' => $row['original_location'],
+			'folder_id' => $row['folder_id'],
+			'file_id' => $row['file_id'] ?? null,
+			'deleted_by' => $row['deleted_by'] ?? null,
 		], $rows);
 	}
 
